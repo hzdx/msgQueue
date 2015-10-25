@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.mycom.myapp</groupId>
+		<artifactId>msgQueue</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>msgQueue-processor</artifactId>
+	<packaging>war</packaging>
+	<description>将队列中的消息取出，并发送</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.mycom.myapp</groupId>
+			<artifactId>msgQueue-base</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

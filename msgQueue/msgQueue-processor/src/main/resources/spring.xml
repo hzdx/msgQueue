@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+	default-lazy-init="true">
+
+	<context:annotation-config />
+	
+	<!-- <bean class="com.mycom.util.JdbcUtil"></bean> -->
+	
+	<bean id="coreService" class="com.mycom.service.CoreService" scope="singleton" lazy-init="false">
+	</bean>
+
+	<bean id="executorService" class="java.util.concurrent.Executors"
+		factory-method="newFixedThreadPool">
+		<constructor-arg value="50"></constructor-arg>
+	</bean>
+
+	<util:list id="processorList">
+		<bean class="com.mycom.process.Processor" />
+		<bean class="com.mycom.process.Processor" />
+		<bean class="com.mycom.process.Processor" />
+		<bean class="com.mycom.process.Processor" />
+		<bean class="com.mycom.process.Processor" />
+	</util:list>
+
+	<beans profile="hazelcast,default">
+		<bean id="hazelcastInstance" class="com.hazelcast.core.Hazelcast"
+			factory-method="newHazelcastInstance" destroy-method="shutdown"
+			lazy-init="false" />
+		<bean id="subjectQueue" factory-bean="hazelcastInstance"
+			factory-method="getQueue">
+			<constructor-arg value="subjectQueue" />
+		</bean>
+	</beans>
+
+</beans>

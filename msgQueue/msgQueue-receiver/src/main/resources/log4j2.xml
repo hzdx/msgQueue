@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="off" monitorInterval="30">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout charset="UTF-8" pattern="%d %-5p [%t] %c{1.} (%F:%L) - %m%n" />
+      <ThresholdFilter level="DEBUG" />
+    </Console>
+    <RollingRandomAccessFile name="File" fileName="logs/scman.log" filePattern="logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz" append="true">
+      <PatternLayout charset="UTF-8" Pattern="%d %-5p %c{1.} [%t] %m%n" />
+      <ThresholdFilter level="DEBUG" />
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="24" modulate="true" />
+        <SizeBasedTriggeringPolicy size="100 MB" />
+      </Policies>
+      <DefaultRolloverStrategy max="10" compressionLevel="6" />
+    </RollingRandomAccessFile>
+    <RollingRandomAccessFile name="Wire" fileName="logs/wire.log" filePattern="logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH}-%i.log.gz" append="true">
+      <PatternLayout charset="UTF-8" Pattern="%d %-5p %c{1.} [%t] %m%n" />
+      <ThresholdFilter level="DEBUG" />
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="24" modulate="true" />
+        <SizeBasedTriggeringPolicy size="100 MB" />
+      </Policies>
+      <DefaultRolloverStrategy max="10" compressionLevel="6" />
+    </RollingRandomAccessFile>
+  </Appenders>
+  <Loggers>
+    <Root level="DEBUG">
+      <AppenderRef ref="Console" />
+      <AppenderRef ref="File" />
+    </Root>
+    <Logger name="org.springframework" level="INFO" />
+    <Logger name="org.apache.commons" level="WARN" />
+    <Logger name="org.apache.http" level="INFO" />
+    <Logger name="org.apache.http" level="ERROR">
+      <AppenderRef ref="Wire" />
+    </Logger>
+    <Logger name="com.hazelcast" level="INFO" />
+    <Logger name="com.elinku.ums" level="DEBUG" />
+  </Loggers>
+</Configuration>
