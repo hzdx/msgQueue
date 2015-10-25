@@ -12,7 +12,7 @@ import org.apache.http.util.EntityUtils;
 
 public class HttpUtil {
 	/**
-	 * post方式发生请求
+	 * post方式请求
 	 */
 	public static void postForm(String url,String msg) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();

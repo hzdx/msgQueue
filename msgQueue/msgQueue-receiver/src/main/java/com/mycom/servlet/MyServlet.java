@@ -25,9 +25,6 @@ public class MyServlet extends HttpServlet {
 
 	private MyHandler handler = null;
 
-	public MyServlet() {
-	}
-
 	public void init(ServletConfig config) throws ServletException {
 		WebApplicationContext ctx = WebApplicationContextUtils
 				.getWebApplicationContext(config.getServletContext());
@@ -66,10 +63,8 @@ public class MyServlet extends HttpServlet {
 			String str = handler.processPost(httpPost);
 			if (str != null) {
 				byte[] b = str.getBytes("UTF-8");
-				// response.setContentType(httpEntity.getContentType().getValue());
 				response.setContentLength(b.length);
 				response.getOutputStream().write(b);
-
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

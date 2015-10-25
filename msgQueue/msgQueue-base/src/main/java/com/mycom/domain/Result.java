@@ -1,10 +1,12 @@
 package com.mycom.domain;
 
+import java.io.Serializable;
+
 /**
  * 返回对象
- *
  */
-public class Result {
+@SuppressWarnings("serial")
+public class Result implements Serializable{
 	private int id;
 	private String msg;
 	public int getId() {

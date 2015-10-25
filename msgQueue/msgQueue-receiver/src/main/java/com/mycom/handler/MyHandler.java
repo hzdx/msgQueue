@@ -21,7 +21,6 @@ public class MyHandler {
 	private BlockingQueue<Subject> subjectQueue = null;
 	
 	public HttpResponse processGet(HttpGet get){
-		//String msg = EntityUtils.toString(get.get, defaultCharset)
 		return null;
 	}
 	
@@ -39,8 +38,5 @@ public class MyHandler {
 		}
 	}
 
-//	private <T> T  fromJson(String str,Class<T> type) throws Exception{
-//		return mapper.readValue(str, type);
-//	}
 	
 }

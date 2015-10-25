@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * 消息对象
  */
+@SuppressWarnings("serial")
 public class Subject implements Serializable{
 	private Integer id;
 	private String msg;

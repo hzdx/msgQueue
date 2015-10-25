@@ -1,7 +1,6 @@
 package com.mycom.process;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -21,9 +20,6 @@ public class Processor implements Runnable {
 
     @Resource
 	private BlockingQueue<Subject> subjectQueue = null;
-    /*public Processor() {
-    	System.out.println(Thread.currentThread().getId()+" process is starting!=======");
-    }*/
 
     public void run() {
         while (running.get()) {

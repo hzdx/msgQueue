@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+/**
+ * 进行Json转换，解析http请求
+ */
 public class Codec{
 
     private Logger logger = LoggerFactory.getLogger(Codec.class);
