@@ -3,22 +3,19 @@ package com.mycom.test.thread;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-
-
-
-
-
 import com.mycom.domain.Subject;
 
 public class BatchInsertHandler {
-	private int threadCount = 20;
 	@Resource
 	private DataSource dataSource;
 	
@@ -26,18 +23,18 @@ public class BatchInsertHandler {
 	public void insertOnce(List<Subject> list){
 		try{
 			Connection conn = dataSource.getConnection();
-			execute(conn,list);
+			executeUpdate(conn,list);
 		}catch(Exception e){			
 		}
 	}
 	
 	//多线程方式
-	public void mutiThreadInsert(List<Subject> list){
-		long time = System.currentTimeMillis();
+	public void mutiThreadInsert(List<Subject> list,int threadCount){
 		int count = list.size();
 		//每个线程需处理记录数
 		int part = count % threadCount==0?count / threadCount:(count/threadCount+1);
-		ExecutorService exec = Executors.newCachedThreadPool();
+		List<Future<String>> resultList = new ArrayList<Future<String>>(); 
+		ExecutorService exec = Executors.newFixedThreadPool(threadCount);
 		for(int i=0;i<threadCount;i++){
 			int startIndex = part * i;
 			int endIndex = part * (i + 1);
@@ -49,24 +46,33 @@ public class BatchInsertHandler {
 //			InsertDbThread insert = new InsertDbThread();
 //			insert.setConnection(conn);
 //			insert.setList(list);
-			Runnable runner = new Runnable() {				
+			Callable<String> runner = new Callable<String>() {				
 				@Override
-				public void run() {
+				public String call() {
 					long time = System.currentTimeMillis();
 					System.out.println(Thread.currentThread().getName()+" start!");
-					execute(conn,feed);
+					executeUpdate(conn,feed);
 					System.out.println(Thread.currentThread().getName()
 							+" end ,cost ms:"+(System.currentTimeMillis()-time));
+					return Thread.currentThread().getName()+" is complete!";
 				}
 			};
-			exec.execute(runner);
+			Future<String> fs = exec.submit(runner);
+			resultList.add(fs);
 		}
-		exec.shutdown();
-		System.out.println("total cost :"+(System.currentTimeMillis()-time));
+		 for (Future<String> fs : resultList) { 
+             try { 
+                  System.out.println(fs.get());     //打印各个线程（任务）执行的结果 
+             } catch (Exception e) {
+             } finally { 
+                     //启动一次顺序关闭，执行以前提交的任务，但不接受新任务。如果已经关闭，则调用没有其他作用。 
+            	 exec.shutdown(); 
+             } 
+		 } 
 		
 	}
 	
-	private void execute(Connection conn,List<Subject> list){
+	private void executeUpdate(Connection conn,List<Subject> list){
 		try {
 			conn.setAutoCommit(false);
 			String sql = "insert into subject(id,msg) values(?,?)";
@@ -95,7 +101,4 @@ public class BatchInsertHandler {
 		return conn;	
 	}
 	
-	public void setThreadCount(int threadCount){
-		this.threadCount = threadCount;
-	}
 }

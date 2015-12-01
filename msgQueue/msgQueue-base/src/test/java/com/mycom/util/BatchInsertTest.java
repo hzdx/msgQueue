@@ -25,8 +25,7 @@ public class BatchInsertTest {
 		long middleTime = System.currentTimeMillis();
 		System.out.println("*****************************************************");
 		System.out.println("数据初始化完成，耗时 ："+(middleTime-beginTime)+" ms");
-		bh.setThreadCount(10);
-		bh.mutiThreadInsert(list); // 102641ms
+		bh.mutiThreadInsert(list,8); // 102641ms
 		//bh.insertOnce(list);  //83287
 		long endTime = System.currentTimeMillis();
 		System.out.println("*****************************************************");
