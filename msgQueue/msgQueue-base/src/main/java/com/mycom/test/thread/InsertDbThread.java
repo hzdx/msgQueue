@@ -14,7 +14,8 @@ public class InsertDbThread implements Runnable {
 	@Override
 	public void run() {
 		try {
-			long time = System.currentTimeMillis();
+			System.out.println(Thread.currentThread().getName()+" started");
+			long threadBeginTime = System.currentTimeMillis();
 			conn.setAutoCommit(false);
 			String sql = "insert into subject(id,msg) values(?,?)";
 			PreparedStatement prepst = conn.prepareStatement(sql);
@@ -25,7 +26,7 @@ public class InsertDbThread implements Runnable {
 			}
 			prepst.executeBatch();
 			conn.commit();
-			System.out.println(Thread.currentThread().getName()+"execute cost :" +(System.currentTimeMillis()-time)+" ms");
+			System.out.println(Thread.currentThread().getName()+"execute cost :" +(System.currentTimeMillis()-threadBeginTime)+" ms");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

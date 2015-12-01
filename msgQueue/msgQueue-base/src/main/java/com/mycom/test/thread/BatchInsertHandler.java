@@ -33,10 +33,11 @@ public class BatchInsertHandler {
 	
 	//多线程方式
 	public void mutiThreadInsert(List<Subject> list){
+		long time = System.currentTimeMillis();
 		int count = list.size();
 		//每个线程需处理记录数
 		int part = count % threadCount==0?count / threadCount:(count/threadCount+1);
-		//ExecutorService exec = Executors.newCachedThreadPool();
+		ExecutorService exec = Executors.newCachedThreadPool();
 		for(int i=0;i<threadCount;i++){
 			int startIndex = part * i;
 			int endIndex = part * (i + 1);
@@ -45,10 +46,10 @@ public class BatchInsertHandler {
 			}
 			final List<Subject> feed = list.subList(startIndex, endIndex);
 			final Connection conn = getConnection();
-			InsertDbThread insert = new InsertDbThread();
-			insert.setConnection(conn);
-			insert.setList(list);
-			new Thread(new Runnable() {				
+//			InsertDbThread insert = new InsertDbThread();
+//			insert.setConnection(conn);
+//			insert.setList(list);
+			Runnable runner = new Runnable() {				
 				@Override
 				public void run() {
 					long time = System.currentTimeMillis();
@@ -57,14 +58,16 @@ public class BatchInsertHandler {
 					System.out.println(Thread.currentThread().getName()
 							+" end ,cost ms:"+(System.currentTimeMillis()-time));
 				}
-			}).start();
-			//exec.execute(insert);
+			};
+			exec.execute(runner);
 		}
+		exec.shutdown();
+		System.out.println("total cost :"+(System.currentTimeMillis()-time));
+		
 	}
 	
 	private void execute(Connection conn,List<Subject> list){
 		try {
-			long time = System.currentTimeMillis();
 			conn.setAutoCommit(false);
 			String sql = "insert into subject(id,msg) values(?,?)";
 			PreparedStatement prepst = conn.prepareStatement(sql);
@@ -75,7 +78,6 @@ public class BatchInsertHandler {
 			}		
 			prepst.executeBatch();		
 			conn.commit();
-			System.out.println(Thread.currentThread().getName()+"execute cost :" +(System.currentTimeMillis()-time)+" ms");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
