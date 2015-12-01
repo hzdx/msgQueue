@@ -10,6 +10,8 @@
 	<context:annotation-config />
 	
 	<bean class="com.mycom.util.JdbcUtil"></bean>
+	
+	<bean class="com.mycom.test.thread.BatchInsertHandler"/>
 
 	<!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
@@ -19,6 +21,10 @@
 			value="jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
+		<property name="initialSize" value="5" />
+		<property name="maxTotal" value="100" />
+		<property name="maxIdle" value="10" />
+		<property name="minIdle" value="3" />
 	</bean>
 
 	<!-- <beans profile="hazelcast,default">
