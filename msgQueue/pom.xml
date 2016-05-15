@@ -44,6 +44,13 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -177,7 +184,7 @@
 			</activation>
 			<properties>
 				<db.driverClass>com.mysql.jdbc.Driver</db.driverClass>
-				<db.url>jdbc:mysql://10.8.1.55:3306/ums?characterEncoding=UTF-8</db.url>
+				<db.url>jdbc:mysql://localhost:3306/ums?characterEncoding=UTF-8</db.url>
 				<db.username>ums</db.username>
 				<db.password>ums</db.password>
 				<db.initialSize>5</db.initialSize>
@@ -201,5 +208,17 @@
 			</properties>
 		</profile>
 	</profiles>
+
+	<repositories>
+		<repository>
+			<id>osc</id>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>maven2</id>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+	</repositories>
+
 
 </project>

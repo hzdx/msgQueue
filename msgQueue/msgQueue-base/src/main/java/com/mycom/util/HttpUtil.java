@@ -14,7 +14,7 @@ public class HttpUtil {
 	/**
 	 * post方式请求
 	 */
-	public static void postForm(String url,String msg) {
+	public static void postForm(String url, String msg) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(url);
 		try {
@@ -26,12 +26,9 @@ public class HttpUtil {
 			try {
 				HttpEntity respentity = response.getEntity();
 				if (respentity != null) {
-					System.out
-							.println("--------------------------------------");
-					System.out.println("Response content: "
-							+ EntityUtils.toString(respentity, "UTF-8"));
-					System.out
-							.println("--------------------------------------");
+					System.out.println("--------------------------------------");
+					System.out.println("Response content: " + EntityUtils.toString(respentity, "UTF-8"));
+					System.out.println("--------------------------------------");
 				}
 			} finally {
 				response.close();

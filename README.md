@@ -1,8 +1,6 @@
-# msgQueue
-消息队列
-## msgQueue  
 
-通过Hazelcast实现的分布式消息队列  
+## msgQueue  
+通过Hazelcast实现的分布式缓冲队列  
 
 ### msgQueue-base  
 
